@@ -1,4 +1,47 @@
 {
-  "interfaceUrl": {"name": "hello",
-    "data": {"error_no": "0", "error_info": "nomal", "data_list": [1, 2, 3, 4]}}
+  "chenk": {"name": "hello", "data": {"error_no": "0", "error_info": "nomal", "data_list": [1, 2, 3, 4]}},
+  "get_mul_asset": {
+  "count": 0,
+  "data": {},
+  "data_list": [
+    {
+      "afund_market_value": "string",
+      "arp_debit": "string",
+      "asset": "string",
+      "asset_prop": "string",
+      "assurescale_value": "string",
+      "bfund_market_value": "string",
+      "bond_market_value": "string",
+      "crdt_market_value": "string",
+      "dyna_market_value": "string",
+      "enable_balance": "string",
+      "finance_balance": "string",
+      "finexe_debit": "string",
+      "fund_account": "string",
+      "fund_asset": "string",
+      "hkfund_market_value": "string",
+      "hstock_market_value": "string",
+      "ifund_market_value": "string",
+      "income": "string",
+      "market_value": "string",
+      "money_type": "string",
+      "net_asset": "string",
+      "offund_market_value": "string",
+      "opt_cash_balance": "string",
+      "percentage": "string",
+      "qrp_market_value": "string",
+      "srp_debit": "string",
+      "stand_market_value": "string",
+      "stock_market_value": "string",
+      "tfund_market_value": "string",
+      "total_debit": "string"
+    }
+  ],
+  "error_info": "执行成功",
+  "error_no": "0",
+  "load_success": "string"
+},
+  "demo": {"demo": "Its a demo!"},
+  "demo/demo2": {"demo": "Its a demo/demo2!"},
+  "demo2/demo": {"demo": "Its a demo2/demo!"}
 }
