@@ -4,28 +4,33 @@
 # @File    : run.py
 # @Software: PyCharm
 
-import os
+import os, time
 
-import bottle
-from bottle import Bottle, route, run, template
 
-from mock.business.loadJsonFile import readJsonFile
+from bottle import Bottle, request, run, template, static_file, FileUpload
+from business.loadJsonFile import readJsonFile
+from public import logging
+
+
+def getCurrentTime():
+    return time.strftime("%Y-%m-%d_%H%M%S")
+
 
 mock = Bottle()
 
 @mock.route("/")
-def readMe():
-    return template("""<h1>说明</h1>
-    <p>该服务主要是解决三方服务环境不便利，可通过自行模拟配置三方服务的回参.</p>
-    <h2>配置说明</h2>
-    <p>代码的config目录下， 在response.json文件里面进行配置；json文件中的key为实际请求的接口url，value为接口的响应参数</p>
-    <h3>样例</h3>
-    <p>配置信息为：
-    "chenk": {"name": "hello", "data": {"error_no": "0", "error_info": "nomal", "data_list": [1, 2, 3, 4]}}
-    <br>则接口请求地址为 IP:PORT/mock/chenk(url中的mock是默认路由前缀)<br>
-    响应内容为： {"name": "hello", "data": {"error_no": "0", "error_info": "nomal", "data_list": [1, 2, 3, 4]}}
-    </p>
-    """)
+@mock.route("/readMe")
+def readMe2():
+    return template("bootstrap.html.tpl")
+
+
+@mock.route("/mock/fetchResponseJsonFile")
+def fetchResponseJsonFile():
+    result = ""
+    for k, v in readJsonFile("config/response.json").items():
+        result += "<p>{0}: {1}</p>".format(k, v)
+    return result
+
 
 @mock.route('/mock/<name:path>')
 def mockResponse(name):
@@ -35,7 +40,36 @@ def mockResponse(name):
     return responseJson.get(name)
 
 
+@mock.route("/mock/downloadResponseJsonFile")
+def downloadResponseJsonFile(filename="response.json"):
+    print("os.getcwd", os.getcwd())
+    path = os.path.join(os.getcwd(), "config")
+    print(path)
+    return static_file(filename, root=path, download=filename)
+
+
+@mock.route("/mock/uploadResponseJsonFile", method="POST")
+def uploadResponseJsonFile():
+    category = request.forms.get('category')
+    upload = request.files.get('upload')
+    name, ext = os.path.splitext(upload.filename)
+    if ext not in (".json"):
+        return 'File extension not allowed.'
+
+    try:
+        filepath = os.path.join(os.getcwd(), "config", "response.json")
+        backupFilepath = "-".join([filepath, getCurrentTime()])
+        os.renames(filepath, backupFilepath)
+        upload.save(destination=filepath) # appends upload.filename automatically
+    except Exception as e:
+        logging.info(str(e))
+        logging.info("The origin filepath is {}.".format(filepath))
+        logging.info("The backup filepath is {}.".format(backupFilepath))
+        return str(e)
+    return 'Upload Succefully!'
+
+
 def hello(name="Stranger"):
     return template("Hello World! {{name}}, {{chenk}}", name="nima", chenk=name)
 
-run(app=mock, host="localhost", port=8888, debug=False)
+run(app=mock, host="localhost", port=8889, debug=True, reloader=True)
