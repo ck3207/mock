@@ -1,0 +1,50 @@
+  <script>
+function shiftTab(tab){
+	var tabs = ["mock", "ts"];
+	var i = 0;
+	for (;tabs[i];){
+		var elementA = document.getElementsByTagName("a")[i];
+		var elementCollapse = document.getElementsByClassName("collapse")[i];
+		var elementLi = document.getElementsByTagName("li")[i];
+		<!-- 导航栏切换 -->
+		if (tabs[i] == tab) {
+			if (elementLi.getAttribute("class") == "active") {
+				elementLi.setAttribute("class", "");
+			}else{
+				elementLi.setAttribute("class", "active");
+			}
+			
+			elementA.setAttribute("class", "navbar-brand");
+			elementA.setAttribute("aria-expanded", true);
+			<!-- elementCollapse.setAttribute("class", "panel-collapse collapse"); -->
+			<!-- elementCollapse.setAttribute("aria-expanded", false); -->
+		}else{
+			if (elementLi.getAttribute("class") == "active") {
+				elementLi.setAttribute("class", "");
+				}
+			elementA.setAttribute("class", "navbar-brand");
+			elementA.setAttribute("aria-expanded", false);
+			elementCollapse.setAttribute("class", "panel-collapse collapse");
+			elementCollapse.setAttribute("aria-expanded", false);
+		}
+		i += 1;
+
+	}
+	
+	
+}
+function checkUploadButton(form){
+	alert("I stopped it.");
+	return false;
+}
+
+function checkFile(){
+	var filename = document.forms["uploadForm"];
+	var filename = document.forms["uploadForm"].getAttribute("name");
+	<!-- if (filename.include(".json")) { -->
+		<!-- return true; -->
+	<!-- }else { -->
+		<!-- return false; -->
+	<!-- } -->
+}
+</script>

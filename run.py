@@ -7,7 +7,7 @@
 import os, time
 
 
-from bottle import Bottle, request, run, template, static_file, FileUpload
+from bottle import Bottle, request, run, template, static_file, FileUpload, redirect, abort
 from business.loadJsonFile import readJsonFile
 from public import logging
 
@@ -20,8 +20,27 @@ mock = Bottle()
 
 @mock.route("/")
 @mock.route("/readMe")
-def readMe2():
-    return template("bootstrap.html.tpl")
+def readMe():
+    return template("index.html")
+
+@mock.route("/static/<filename:path>")
+def fetchStaticFile(filename, targetDir=""):
+    if ".." in filename or ("static" in filename and os.path.basename(filename) != "response.json"):
+        abort(403)
+    path = os.path.join(os.getcwd(), targetDir, filename)
+    if os.path.isfile(path):
+        if not request.query.isDownload == "0":
+            isDownload = True
+        else: isDownload = False
+    else:
+        abort(404, text="{} is not exists.".format(os.path.join(os.getcwd(), targetDir, filename)))
+    return static_file(filename=os.path.basename(filename), root=os.path.dirname(path), download=isDownload)
+
+# @mock.route("/mock/downloadResponseJsonFile")
+# def downloadResponseJsonFile(filename="response.json"):
+#     print("os.getcwd", os.getcwd())
+#     path = os.path.join(os.getcwd(), "config")
+#     return static_file(filename, root=path, download=filename)
 
 
 @mock.route("/mock/fetchResponseJsonFile")
@@ -44,7 +63,6 @@ def mockResponse(name):
 def downloadResponseJsonFile(filename="response.json"):
     print("os.getcwd", os.getcwd())
     path = os.path.join(os.getcwd(), "config")
-    print(path)
     return static_file(filename, root=path, download=filename)
 
 
@@ -72,4 +90,5 @@ def uploadResponseJsonFile():
 def hello(name="Stranger"):
     return template("Hello World! {{name}}, {{chenk}}", name="nima", chenk=name)
 
-run(app=mock, host="localhost", port=8889, debug=True, reloader=True)
+template("{{o}}, {{name}}, {{name2}}", name="nihao", name2="chenk", o="imo")
+run(app=mock, host="localhost", port=8889, debug=True, reloader=True, server="paste")

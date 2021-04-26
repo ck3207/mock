@@ -12,5 +12,10 @@ def readJsonFile(filepath):
     with open(file=filepath, mode="r", encoding="utf-8") as f:
         return json.loads(f.read())
 
+
+def readStaticFile():
+    pass
+
+
 # a = readJsonFile("../config/response.json")
 # print(a["data"])
