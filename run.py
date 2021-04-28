@@ -25,7 +25,7 @@ def readMe():
 
 @mock.route("/static/<filename:path>")
 def fetchStaticFile(filename, targetDir=""):
-    if ".." in filename or ("static" in filename and os.path.basename(filename) != "response.json"):
+    if ".." in filename or ("static" in filename and os.path.basename(filename)):
         abort(403)
     path = os.path.join(os.getcwd(), targetDir, filename)
     if os.path.isfile(path):
@@ -51,7 +51,7 @@ def fetchResponseJsonFile():
     return result
 
 
-@mock.route('/mock/<name:path>')
+@mock.route('/mock/<name:path>', method=["GET", "POST", "OPTIONS"])
 def mockResponse(name):
     responseJson = readJsonFile("config/response.json")
     if name not in responseJson:
@@ -91,4 +91,5 @@ def hello(name="Stranger"):
     return template("Hello World! {{name}}, {{chenk}}", name="nima", chenk=name)
 
 template("{{o}}, {{name}}, {{name2}}", name="nihao", name2="chenk", o="imo")
-run(app=mock, host="localhost", port=8889, debug=True, reloader=True, server="paste")
+# run(app=mock, host="localhost", port=8889, debug=True, reloader=True, server="paste")
+run(app=mock, host="10.20.18.174", port=8889, debug=True, reloader=True)
