@@ -91,5 +91,5 @@ def hello(name="Stranger"):
     return template("Hello World! {{name}}, {{chenk}}", name="nima", chenk=name)
 
 template("{{o}}, {{name}}, {{name2}}", name="nihao", name2="chenk", o="imo")
-# run(app=mock, host="localhost", port=8889, debug=True, reloader=True, server="paste")
-run(app=mock, host="10.20.18.174", port=8889, debug=True, reloader=True)
+run(app=mock, host="localhost", port=8889, debug=True, reloader=True, server="paste")
+# run(app=mock, host="10.20.18.174", port=8889, debug=True, reloader=True)
